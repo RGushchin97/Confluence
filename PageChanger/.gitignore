@@ -2,4 +2,4 @@
 /target
 /build
 *.iml
-*data.properties
+/src/main/resources/data.properties
