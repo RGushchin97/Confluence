@@ -7,7 +7,7 @@ public class PropertyReader {
 
     private static Properties properties;
     private static String fileName = "data.properties";
-    
+
     static {
         properties = new Properties();
         InputStream fileStream = null;
