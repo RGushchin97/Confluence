@@ -30,7 +30,13 @@ public class JsonUtils {
         return gson.toJson(element);
     }
 
-    public static JsonObject formObjectWithIntValue(String key, int value) {
+    public static JsonObject formObjectWithInteger(String key, int value) {
+        JsonObject object = new JsonObject();
+        object.addProperty(key, value);
+        return object;
+    }
+
+    public static JsonObject formObjectWithString(String key, String value) {
         JsonObject object = new JsonObject();
         object.addProperty(key, value);
         return object;

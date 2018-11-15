@@ -1,14 +1,17 @@
 {
   "id":"462787970",
   "type":"page",
-  "title":"Hello",
+  "title":"Humans on projects",
   "space":{
     "key":"A1QAEP"
   },
   "body": {
     "storage":{
-      "value": "<p>Hello.</p>",
+      "value": "",
       "representation":"storage"
     }
+  },
+  "version": {
+    "number": ""
   }
 }
