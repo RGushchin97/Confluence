@@ -9,12 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.StringReader;
 import java.net.URISyntaxException;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.List;
-
-import static logger.Logger.logStep;
 
 public class Main {
 
