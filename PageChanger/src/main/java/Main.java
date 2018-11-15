@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.StringReader;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -25,8 +26,9 @@ public class Main {
             PropertyReader.getProperty("authToken"));
     private static BasicHeader contentTypeHeader = new BasicHeader("Content-Type",
             PropertyReader.getProperty("contentType"));
-    private static String start = "<p>";
-    private static String end = "</p>";
+    private static String header1 = "Last name";
+    private static String header2 = "First name";
+    private static String header3 = "Project";
 
 
     public static void main(String[] args) throws URISyntaxException, FileNotFoundException {
@@ -35,15 +37,19 @@ public class Main {
         String queryPath = FileUtils.getResourcePath(QUERY_RESOURCE);
         String query = FileUtils.readFileIntoString(queryPath);
         sqlWorker.executeQuery(query);
-        List<String> rows = sqlWorker.getRows();
-        StringUtils.addToStartAndToEndInList(rows, start, end);
-        String value = StringUtils.listToString(rows);
+        List<String[]> rows = sqlWorker.getRows();
+        sqlWorker.close();
+
+        ArrayList<String> headers = new ArrayList<>();
+        headers.add(header1);
+        headers.add(header2);
+        headers.add(header3);
+        String table = StringUtils.formHtmlTableFromList(rows, headers);
 
         URIBuilder builder = new URIBuilder(PropertyReader.getProperty("url") + PropertyReader.getProperty("id"));
-
         RequestsWorker requestsWorker = new RequestsWorker(builder.build());
 
-        requestsWorker.makeGetRequest(new Header[]{authHeader});
+        requestsWorker.makeGetRequest(new Header[]{ authHeader });
         String responseString = requestsWorker.getResponseString();
 
         version = JsonUtils.getIntValue(JsonUtils.getAsJson(JsonUtils.getJsonObject(
@@ -51,9 +57,9 @@ public class Main {
         String pagePath = FileUtils.getResourcePath(PAGE_RESOURCE);
         JsonObject page = JsonUtils.getJsonObject(new FileReader(pagePath));
         page.getAsJsonObject(VERSION).addProperty(NUMBER, ++version);
-        page.getAsJsonObject(BODY).getAsJsonObject(STORAGE).addProperty(VALUE, value);
+        page.getAsJsonObject(BODY).getAsJsonObject(STORAGE).addProperty(VALUE, table);
         String body = JsonUtils.elementToJsonString(page);
 
-        requestsWorker.makePutRequest(new Header[] { authHeader, contentTypeHeader}, body);
+        requestsWorker.makePutRequest(new Header[] { authHeader, contentTypeHeader }, body);
     }
 }

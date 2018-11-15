@@ -16,11 +16,7 @@ public class SqlWorker {
         this.url = url;
         this.login = login;
         this.password = password;
-        try {
-            connection = DriverManager.getConnection(url, login, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        open();
     }
 
     public void executeQuery(String query) {
@@ -45,21 +41,29 @@ public class SqlWorker {
         return resultSet;
     }
 
-    public List<String> getRows() {
-        ArrayList<String> rows = new ArrayList<>();
+    public List<String[]> getRows() {
+        ArrayList<String[]> rows = new ArrayList<>();
         try {
             ResultSetMetaData metadata = resultSet.getMetaData();
             int columnCount = metadata.getColumnCount();
             while (resultSet.next()) {
-                StringBuilder row = new StringBuilder();
+                String[] row = new String[columnCount];
                 for (int i = 1; i <= columnCount; i++) {
-                    row.append(resultSet.getString(i)).append(" ");
+                    row[i - 1] = resultSet.getString(i);
                 }
-                rows.add(row.substring(0).trim());
+                rows.add(row);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return rows;
+    }
+
+    public void open() {
+        try {
+            connection = DriverManager.getConnection(url, login, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
