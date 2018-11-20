@@ -20,25 +20,12 @@ public class JsonUtils {
         return parser.parse(reader).getAsJsonObject();
     }
 
-    public static void add(JsonElement source, String key, JsonObject adding) {
-        JsonObject jsonObject = source.getAsJsonObject();
-        jsonObject.add(key, adding);
-    }
-
     public static String elementToJsonString(JsonElement element) {
         Gson gson = new GsonBuilder().create();
         return gson.toJson(element);
     }
 
-    public static JsonObject formObjectWithInteger(String key, int value) {
-        JsonObject object = new JsonObject();
-        object.addProperty(key, value);
-        return object;
-    }
-
-    public static JsonObject formObjectWithString(String key, String value) {
-        JsonObject object = new JsonObject();
-        object.addProperty(key, value);
-        return object;
+    public static String getPrettyJsonString(JsonElement element) {
+        return new GsonBuilder().setPrettyPrinting().create().toJson(element);
     }
 }

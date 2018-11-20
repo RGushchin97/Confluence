@@ -37,10 +37,6 @@ public class SqlWorker {
     }
 
 
-    public ResultSet getResultSet() {
-        return resultSet;
-    }
-
     public List<String[]> getRows() {
         ArrayList<String[]> rows = new ArrayList<>();
         try {

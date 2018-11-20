@@ -4,14 +4,17 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.Header;
 import org.apache.http.util.EntityUtils;
+import utils.PropertyReader;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class RequestsWorker {
 
@@ -21,8 +24,14 @@ public class RequestsWorker {
     private String[] headers;
 
     private CloseableHttpResponse closeableResponse;
-    public RequestsWorker(URI uri) {
-        this.uri = uri;
+    public RequestsWorker(String uri) {
+        URIBuilder builder;
+        try {
+            builder = new URIBuilder(uri);
+            this.uri = builder.build();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     public void makeGetRequest(Header[] headers) {
